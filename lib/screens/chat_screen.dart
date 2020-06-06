@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flash_chat/google_sign_in.dart';
 
 class ChatScreen extends StatefulWidget {
   static const String id = 'chatScreen';
@@ -20,7 +21,11 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    getCurrentUser();
+    if (myGoogleUser == null) {
+      getCurrentUser();
+    } else {
+      logInUser = myGoogleUser;
+    }
   }
 
   void getCurrentUser() async {
@@ -59,7 +64,11 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () async {
-                _auth.signOut();
+                if (myGoogleUser == null) {
+                  _auth.signOut();
+                } else {
+                  signOutGoogle();
+                }
                 Navigator.pop(context);
               }),
         ],

@@ -1,8 +1,11 @@
+import 'package:flash_chat/screens/chat_screen.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flash_chat/components/rounded_button.dart';
+import 'package:flash_chat/google_sign_in.dart';
+import 'package:flash_chat/firstScreen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcomeScreen';
@@ -69,34 +72,49 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       ),
     );
   }
-}
 
-Widget _signInButton() {
-  return OutlineButton(
-    splashColor: Colors.grey,
-    onPressed: () {},
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-    highlightElevation: 0,
-    borderSide: BorderSide(color: Colors.grey),
-    child: Padding(
-      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Image(image: AssetImage("images/google_logo.png"), height: 35.0),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Text(
-              'Sign in with Google',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.grey,
-              ),
+  Widget _signInButton() {
+    return OutlineButton(
+      splashColor: Colors.grey,
+      onPressed: () {
+        signInWithGoogle().whenComplete(() {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return ChatScreen();
+//                return FirstScreen(
+//                  name: name,
+//                  email: email,
+//                  imageUrl: imageUrl,
+//                );
+              },
             ),
-          )
-        ],
+          );
+        });
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(image: AssetImage("images/google_logo.png"), height: 35.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
